@@ -10,13 +10,13 @@ This directory contains the RL-GLM-HMM implementation used for the behavioral an
 
 
 
-\* `rl\_glm\_hmm.py`: Project-specific `RLHMMHybrid` implementation.
+* `rl\_glm\_hmm.py`: Project-specific `RLHMMHybrid` implementation.
 
-\* `upstream\_glmhmm/`: Pinned Git submodule containing the upstream GLM-HMM infrastructure developed by Iris Stone.
+* `upstream\_glmhmm/`: Pinned Git submodule containing the upstream GLM-HMM infrastructure developed by Iris Stone.
 
-\* `scripts/`: Data preparation, model fitting, model evaluation, and figure-generation scripts associated with the paper. These scripts will be documented as they are added.
+* `scripts/`: Data preparation, model fitting, model evaluation, and figure-generation scripts associated with the paper. These scripts will be documented as they are added.
 
-\* `requirements.txt`: Python dependencies required for the project-specific implementation and analysis scripts.
+* `requirements.txt`: Python dependencies required for the project-specific implementation and analysis scripts.
 
 
 
@@ -56,23 +56,23 @@ Project-specific extensions include:
 
 
 
-\* state-specific Q-learning traces;
+* state-specific Q-learning traces;
 
-\* state-specific learning rates;
+* state-specific learning rates;
 
-\* bounded learning-rate estimation;
+* bounded learning-rate estimation;
 
-\* separate policy coefficients for positive and negative action-value differences;
+* separate policy coefficients for positive and negative action-value differences;
 
-\* additional choice- and outcome-history predictors;
+* additional choice- and outcome-history predictors;
 
-\* explicit handling of session boundaries;
+* explicit handling of session boundaries;
 
-\* sessionwise transition-matrix updates;
+* sessionwise transition-matrix updates;
 
-\* bounded and regularized parameter optimization; and
+* bounded and regularized parameter optimization; and
 
-\* optional Numba acceleration for model fitting.
+* optional Numba acceleration for model fitting.
 
 
 
