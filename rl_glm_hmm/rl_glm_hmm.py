@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Hybrid RL-HMM for Iris Stone-style GLM-HMM infrastructure.
+Project-specific RL-GLM-HMM extension of the HMM infrastructure in
+Iris Stone's glmhmm repository. See README.md for provenance.
 
 Model:
     state-specific alpha controls one Q-learning trace per latent state
@@ -32,15 +33,28 @@ Important options:
         alpha = alpha_fixed
 """
 
+from pathlib import Path
+import sys
+
 import numpy as np
 from scipy import optimize
 
-try:
-    from glmhmm.hmm import HMM
-    from glmhmm.init_params import init_transitions, init_states
-except ImportError:
-    from hmm import HMM
-    from init_params import init_transitions, init_states
+
+# Locate the pinned Iris Stone glmhmm submodule relative to this file.
+_UPSTREAM_REPO = Path(__file__).resolve().parent / "upstream_glmhmm"
+
+if not (_UPSTREAM_REPO / "glmhmm" / "hmm.py").is_file():
+    raise ImportError(
+        "The Iris Stone glmhmm submodule is missing. "
+        "From the repository root, run: "
+        "'git submodule update --init --recursive'."
+    )
+
+if str(_UPSTREAM_REPO) not in sys.path:
+    sys.path.insert(0, str(_UPSTREAM_REPO))
+
+from glmhmm.hmm import HMM
+from glmhmm.init_params import init_transitions, init_states
 
 
 def sigmoid(x):
