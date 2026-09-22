@@ -122,7 +122,7 @@ A project-specific `requirements.txt` will specify the dependencies and versions
 
 
 
-The code under `upstream\_glmhmm/` remains a separate upstream repository and is not relicensed by this project. Any license subsequently applied to the paper repository applies only to original project-specific materials unless explicitly stated otherwise.
+The code under `upstream_glmhmm/` remains a separate upstream repository and is not relicensed by this project. Any license subsequently applied to the paper repository applies only to original project-specific materials unless explicitly stated otherwise.
 
 
 
