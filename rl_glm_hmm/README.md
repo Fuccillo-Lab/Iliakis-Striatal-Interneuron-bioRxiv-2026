@@ -10,9 +10,9 @@ This directory contains the RL-GLM-HMM implementation used for the behavioral an
 
 
 
-* `rl\_glm\_hmm.py`: Project-specific `RLHMMHybrid` implementation.
+* `rl_glm_hmm.py`: Project-specific `RLHMMHybrid` implementation.
 
-* `upstream\_glmhmm/`: Pinned Git submodule containing the upstream GLM-HMM infrastructure developed by Iris Stone.
+* `upstream_glmhmm/`: Pinned Git submodule containing the upstream GLM-HMM infrastructure developed by Iris Stone.
 
 * `scripts/`: Data preparation, model fitting, model evaluation, and figure-generation scripts associated with the paper. These scripts will be documented as they are added.
 
