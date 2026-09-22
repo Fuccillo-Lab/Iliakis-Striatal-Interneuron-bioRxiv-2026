@@ -1,0 +1,3 @@
+[submodule "rl_glm_hmm/upstream_glmhmm"]
+	path = rl_glm_hmm/upstream_glmhmm
+	url = https://github.com/irisstone/glmhmm.git
