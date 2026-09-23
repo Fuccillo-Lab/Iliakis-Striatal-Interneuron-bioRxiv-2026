@@ -44,11 +44,11 @@ The upstream repository is included as the Git submodule `upstream\_glmhmm` and 
 
 
 
-The files within `upstream\_glmhmm/` originate from Iris Stone’s repository and are not original code from this project. No substantive changes were made to the pinned upstream files.
+The files within `upstream_glmhmm/` originate from Iris Stone’s repository and are not original code from this project. No substantive changes were made to the pinned upstream files.
 
 
 
-The project-specific implementation is contained in `rl\_glm\_hmm.py`. It subclasses the upstream `HMM` class and reuses its forward-backward inference, initial-state update, and parameter-initialization routines. The expectation-maximization procedure was adapted from the structure of the upstream GLM-HMM fitting implementation.
+The project-specific implementation is contained in `rl_glm_hmm.py`. It subclasses the upstream `HMM` class and reuses its forward-backward inference, initial-state update, and parameter-initialization routines. The expectation-maximization procedure was adapted from the structure of the upstream GLM-HMM fitting implementation.
 
 
 
