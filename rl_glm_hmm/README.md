@@ -14,7 +14,11 @@ This directory contains the RL-GLM-HMM implementation used for the behavioral an
 
 * `upstream_glmhmm/`: Pinned Git submodule containing the upstream GLM-HMM infrastructure developed by Iris Stone.
 
-* `scripts/`: Data preparation, model fitting, model evaluation, and figure-generation scripts associated with the paper. These scripts will be documented as they are added.
+* `scripts/`: Data preparation, model fitting, cross-validation, and figure-generation scripts:
+  - `prepare_rlhmm_table.m`: Constructs the analysis-ready model input and Figure 5 trial metadata.
+  - `cross_validate_models.py`: Performs session-fold model cross-validation.
+  - `fit_final_model.py`: Fits the selected model specification using multiple random initializations.
+  - `plot_rlhmm_figure5.m`: Reproduces the computational panels and statistics for Figure 5.
 
 * `requirements.txt`: Python dependencies required for the project-specific implementation and analysis scripts.
 
