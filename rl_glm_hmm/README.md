@@ -74,7 +74,11 @@ Project-specific extensions include:
 
 * optional Numba acceleration for model fitting.
 
+## Model fitting and initialization
 
+Models were evaluated using session-fold cross-validation, with complete sessions assigned to either the training or held-out dataset. To reduce sensitivity to local optima, each model was fitted from multiple parameter initializations. Within each cross-validation fold, the initialization with the highest final log-likelihood was selected for held-out scoring.
+
+The selected three-state model specification was subsequently fitted to the complete dataset using ten random initializations. The initialization with the highest final log-likelihood was used for the reported posterior state probabilities and downstream analyses.
 
 ## Cloning the repository
 
