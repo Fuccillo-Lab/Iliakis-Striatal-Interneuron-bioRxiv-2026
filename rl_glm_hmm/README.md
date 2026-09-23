@@ -116,12 +116,16 @@ The project-specific implementation locates `upstream\_glmhmm` relative to its o
 
 
 
-The upstream `env.yml` describes the historical software environment used for the original GLM-HMM repository. It does not define the complete environment used for the analyses in Iliakis et al.
+The project-specific RL-GLM-HMM implementation was tested using Python 3.12.10. Its direct Python dependencies are recorded in `requirements.txt`.
 
+Install the dependencies using:
 
+```bash
+python -m pip install -r rl_glm_hmm/requirements.txt
+```
+The upstream env.yml describes the historical environment associated with the original GLM-HMM repository. It is retained as part of the pinned upstream submodule but does not define the environment used for the analyses in Iliakis et al.
 
-A project-specific `requirements.txt` will specify the dependencies and versions required to reproduce the present analyses. The local virtual-environment directory itself is not included in the repository.
-
+Virtual-environment directories such as .venv/ are not included in the repository.
 
 
 
