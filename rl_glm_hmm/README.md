@@ -90,7 +90,7 @@ Because the upstream dependency is stored as a Git submodule, clone the complete
 
 ```bash
 
-git clone --recurse-submodules REPOSITORY-URL
+git clone --recurse-submodules [REPOSITORY-URL](https://github.com/Fuccillo-Lab/Iliakis-Striatal-Interneuron-bioRxiv-2026.git)
 
 ```
 
