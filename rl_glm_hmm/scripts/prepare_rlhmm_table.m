@@ -1,4 +1,5 @@
-function T_export = prepare_rlhmm_table(dataFolder, calendarFile, outputFile, excludeBoxSwitch)
+function [T_export, T_plotting] = prepare_rlhmm_table( ...
+        dataFolder, calendarFile, outputFile, excludeBoxSwitch, plottingMetadataFile)
 %PREPARE_RLHMM_TABLE Build the trial table used by the paper's RL-GLM-HMM.
 %
 % T_EXPORT = PREPARE_RLHMM_TABLE(DATAFOLDER, CALENDARFILE, OUTPUTFILE)
@@ -10,6 +11,12 @@ function T_export = prepare_rlhmm_table(dataFolder, calendarFile, outputFile, ex
 % historical box-stability exclusion (default: true). When true, an animal
 % is excluded if it appears in more than one box anywhere in the imported
 % data. This is the rule used for the paper's model input.
+%
+% [T_EXPORT, T_PLOTTING] = PREPARE_RLHMM_TABLE(..., PLOTTINGMETADATAFILE)
+% also returns and optionally writes a trial-keyed companion table containing
+% assignment, highSide, and the legacy precomputed deltaQ used to reproduce
+% the submitted Figure 5. These variables are intentionally kept separate
+% from the fitted RL-GLM-HMM predictors.
 %
 % The exported table intentionally omits deltaQ_z and deltaQ_all_z. Neither
 % was used by the final RL-GLM-HMM. Accordingly, this function does not call
@@ -31,15 +38,20 @@ function T_export = prepare_rlhmm_table(dataFolder, calendarFile, outputFile, ex
 %     "C:\Data\March2026\CsvOutput", ...
 %     "C:\Data\March2026\calendar.csv", ...
 %     "C:\Data\March2026\modelTfinal_for_rlhmm.csv", ...
-%     true);
+%     true, ...
+%     "C:\Data\March2026\rlhmm_plotting_metadata.csv");
 
     if nargin < 4 || isempty(excludeBoxSwitch)
         excludeBoxSwitch = true;
+    end
+    if nargin < 5
+        plottingMetadataFile = '';
     end
 
     dataFolder = char(dataFolder);
     calendarFile = char(calendarFile);
     outputFile = char(outputFile);
+    plottingMetadataFile = char(plottingMetadataFile);
 
     if ~isfolder(dataFolder)
         error('Trial-data folder does not exist: %s', dataFolder);
@@ -384,6 +396,21 @@ function T_export = prepare_rlhmm_table(dataFolder, calendarFile, outputFile, ex
 
     T_export = modelTfinal(:, exportVariables);
 
+    % Companion metadata used only for reproducing the submitted Figure 5.
+    % deltaQ here is the historical precomputed value, not a state-specific
+    % Q trace reconstructed from the final RL-GLM-HMM.
+    plottingVariables = { ...
+        'animalID', ...
+        'iOrig', ...
+        'jOrig', ...
+        'currChoice', ...
+        'currReward', ...
+        'Y', ...
+        'assignment', ...
+        'highSide', ...
+        'deltaQ'};
+    T_plotting = modelTfinal(:, plottingVariables);
+
     %% Sanity checks and write
     requiredForFitter = { ...
         'animalID','iOrig','jOrig','currChoice','currReward', ...
@@ -406,6 +433,15 @@ function T_export = prepare_rlhmm_table(dataFolder, calendarFile, outputFile, ex
         mkdir(outputFolder);
     end
     writetable(T_export, outputFile);
+
+    if ~isempty(plottingMetadataFile)
+        plottingFolder = fileparts(plottingMetadataFile);
+        if ~isempty(plottingFolder) && ~isfolder(plottingFolder)
+            mkdir(plottingFolder);
+        end
+        writetable(T_plotting, plottingMetadataFile);
+        fprintf('Wrote Figure 5 plotting metadata: %s\n', plottingMetadataFile);
+    end
 
     nAnimals = numel(unique(T_export.animalID));
     nSessionsExported = height(unique( ...
