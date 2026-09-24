@@ -17,11 +17,17 @@ This directory contains the RL-GLM-HMM implementation used for the behavioral an
 * `scripts/`: Data preparation, model fitting, cross-validation, and figure-generation scripts:
   - `prepare_rlhmm_table.m`: Constructs the analysis-ready model input and Figure 5 trial metadata.
   - `cross_validate_models.py`: Performs session-fold model cross-validation.
+  - `modelEval_QBackbone_population_sessionCV.m`: Fits Q, QF, and QDF baselines with the saved session folds.
+  - `build_eval_DQPolicyGLM_QF_v2.m`: Constructs the fixed-Î”Q policy-GLM design and evaluates M1â€“M6.
+  - `run_online_rlglm_M5_M6_cv.py`: Fits the online RL-GLM M5/M6 benchmarks with the saved session folds.
+  - `assemble_s15c_masterll.py`: Selects and validates the six animal-level model scores plotted in Figure S15C.
   - `fit_final_model.py`: Fits the selected model specification using multiple random initializations.
   - `plot_rlhmm_figure5.m`: Reproduces the computational panels and statistics for Figure 5.
   - `plot_rlhmm_figureS15.m`: Reproduces the computational panels and statistics for Figure S15.
 
 * `requirements.txt`: Python dependencies required for the project-specific implementation and analysis scripts.
+
+* `data/`: Archived session-fold assignments, animal-level cross-validation summaries for Figure S15C, and the full historical `masterLL.csv` used for the submitted plot. Trial-level input data and posterior probabilities are not included here.
 
 
 
@@ -49,7 +55,7 @@ The upstream repository is included as the Git submodule `upstream\_glmhmm` and 
 
 
 
-The files within `upstream_glmhmm/` originate from Iris Stone’s repository and are not original code from this project. No substantive changes were made to the pinned upstream files.
+The files within `upstream_glmhmm/` originate from Iris Stoneâ€™s repository and are not original code from this project. No substantive changes were made to the pinned upstream files.
 
 
 
@@ -83,7 +89,51 @@ Project-specific extensions include:
 
 Models were evaluated using session-fold cross-validation, with complete sessions assigned to either the training or held-out dataset. To reduce sensitivity to local optima, each model was fitted from multiple parameter initializations. Within each cross-validation fold, the initialization with the highest final log-likelihood was selected for held-out scoring.
 
+The archived `data/session_folds_allopto.csv` contains the actual five-fold assignment for 942 sessions from 38 animals. Supply it as `--fold-csv` to the RL-GLM-HMM cross-validation runner when the trial table has no fold column. The supplied historical `make_session_folds_perAnimal.m` version targets other datasets and does not reproduce this assignment; use the archived CSV for the submitted comparison.
+
+The three baseline runners use the same model-ready trial table (created by `prepare_rlhmm_table.m`) and the saved folds. To regenerate their animal-level summaries from that table, set the trial CSV path and run the MATLAB functions from the repository root:
+
+```matlab
+addpath("rl_glm_hmm/scripts");
+trialCsv = "rl_glm_hmm/data/modelTfinal_for_rlhmm_allopto.csv";
+foldCsv = "rl_glm_hmm/data/session_folds_allopto.csv";
+modelEval_QBackbone_population_sessionCV(trialCsv, foldCsv, ...
+    "rl_glm_hmm/outputs/QBackbone_population_sessionCV_allopto");
+build_eval_DQPolicyGLM_QF_v2(trialCsv, foldCsv, ...
+    "rl_glm_hmm/outputs/DQPolicyGLM_QF_allopto");
+```
+
+The Q-backbone runner requires MATLAB Optimization Toolbox. The fixed-Î”Q runner also requires Statistics and Machine Learning Toolbox. Their primary outputs for panel C are `cv_animalModelSummary.csv` and `cv_animalModelSummary_DQPolicyGLM.csv`, respectively. The prepared trial CSV is not included in this repository and must be created from the source trial exports and calendar metadata.
+
+The online RL-GLM runner uses the Python environment above:
+
+```bash
+python rl_glm_hmm/scripts/run_online_rlglm_M5_M6_cv.py \
+  --csv rl_glm_hmm/data/modelTfinal_for_rlhmm_allopto.csv \
+  --fold-csv rl_glm_hmm/data/session_folds_allopto.csv \
+  --out-dir rl_glm_hmm/outputs/onlineRLGLM
+```
+
+Its archived output is `data/cv_animalModelSummary_onlineRLGLM.csv`. The RL-GLM-HMM runner is `scripts/cross_validate_models.py`; run `--help` for available fitting settings. A K3 run with its default two-element warm-start vectors needs `--no-warm-start` or three-element `--warm-alpha` and `--warm-beta` values. The original fold-fit configuration files were not available for this release, so the precise historical initialization options for the archived K2/K3 results have not been verified. The archived animal-level summaries reproduce the submitted panel C scores independently of rerunning optimization.
+
 The selected three-state model specification was subsequently fitted to the complete dataset using ten random initializations. The initialization with the highest final log-likelihood was used for the reported posterior state probabilities and downstream analyses.
+
+### Figure S15C score assembly
+
+The QF, fixed-Î”Q M5/M6 GLMs, online M6 RL-GLM, and two/three-state RL-GLM-HMM results are first summarized as one row per animal and model, pooling held-out log likelihood and trial counts across folds. `data/masterLL.csv` archives the complete historical 16-model comparison. The following command reconstructs its six rows per animal used in panel C directly from the five archived source summaries:
+
+```bash
+python rl_glm_hmm/scripts/assemble_s15c_masterll.py \
+  --qf rl_glm_hmm/data/cv_animalModelSummary_QBackbone.csv \
+  --glm rl_glm_hmm/data/cv_animalModelSummary_DQPolicyGLM.csv \
+  --online rl_glm_hmm/data/cv_animalModelSummary_onlineRLGLM.csv \
+  --k2 rl_glm_hmm/data/cv_animalModelSummary_RLHMM_K2.csv \
+  --k3 rl_glm_hmm/data/cv_animalModelSummary_RLHMM_K3.csv \
+  --reference rl_glm_hmm/data/masterLL.csv \
+  --out rl_glm_hmm/outputs/masterLL_panelC.csv
+```
+
+Run this from the repository root. `--reference` checks the output against the archived submitted scores and can be omitted when assembling newly generated results. The output contains 228 animal-by-model rows; it can replace `masterLL.csv` in the MATLAB S15 plotting call below. It does not refit models. The fixed-Î”Q GLM analysis fit its QF backbone and constructed the Î”Q and animal-bias predictors using the full dataset before cross-validating GLM coefficients; this historical convention is retained in the archived scores. Its models score 121,830 trials, while QF and the online/RL-GLM-HMM models score 123,714 trials.
 
 ## Cloning the repository
 
@@ -174,7 +224,7 @@ resultsS15 = plot_rlhmm_figureS15( ...
     "rl_glm_hmm/outputs/figureS15");
 ```
 
-This function reproduces the data-driven panels C–L of Figure S15. Panels A and B are conceptual schematics and are not generated programmatically. The six example sessions in panels D–I are identified explicitly in the function to reproduce the submitted figure.
+This function reproduces the data-driven panels Câ€“L of Figure S15. Panels A and B are conceptual schematics and are not generated programmatically. The six example sessions in panels Dâ€“I are identified explicitly in the function to reproduce the submitted figure.
 
 The final output-directory argument is optional. If it is omitted, MATLAB opens the figures and returns the numerical results without writing files to disk.
 
@@ -186,4 +236,3 @@ help plot_rlhmm_figureS15
 ```
 
 The Statistics and Machine Learning Toolbox is required for the statistical tests and mixed-effects models used by these functions.
-
