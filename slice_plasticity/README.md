@@ -8,7 +8,7 @@ Figure 4G illustrates the experimental strategy. `analyze_slice_plasticity.m` re
 
 ## Data availability
 
-The data required to run this analysis are not stored in this GitHub repository. They will be archived separately on Zenodo with the other study data.
+The data required to run this analysis are not stored in this GitHub repository. They are archived on Zenodo with the other study data.
 
 **Zenodo record:** forthcoming
 
@@ -44,15 +44,6 @@ MATLAB's Statistics and Machine Learning Toolbox is required for `ttest2`.
 The function averages AMPA/NMDA ratios across cells within each animal, making animal the inferential unit. It then compares control and inhibition animal means separately for the SST and TH experiments using two-sided Welch unequal-variance t-tests, matching the analyses reported in the manuscript.
 
 Individual cells are shown as transparent points for visualization. Filled points represent animal means, and error bars show mean ± SEM across animals. The two panels use a common y-axis that includes every supplied cell-level observation.
-
-Expected sample sizes and results are:
-
-| Experiment | Control | Inhibition | Welch p-value |
-| --- | ---: | ---: | ---: |
-| SST | 7 animals, 28 cells | 6 animals, 24 cells | 0.01897 |
-| TH | 5 animals, 24 cells | 5 animals, 18 cells | 0.22395 |
-
-The public workflow is restricted to the animal-level analyses reported in the manuscript. Exploratory cell-level mixed models and rank-sum robustness tests are not included.
 
 ## Outputs
 
