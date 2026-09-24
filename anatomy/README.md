@@ -40,7 +40,7 @@ bregma.
 
 ## Allen CCFv3 template
 
-The 10-Âµm Allen CCFv3 average template is an external dependency and is not
+The 10-µm Allen CCFv3 average template is an external dependency and is not
 redistributed in this repository or in the Zenodo archive. Download
 [`average_template_10.nrrd`](https://download.alleninstitute.org/informatics-archive/current-release/mouse_ccf/average_template/average_template_10.nrrd)
 from the
@@ -50,7 +50,7 @@ and provide its local path when running the analysis.
 Please cite the atlas as:
 
 > Wang Q, Ding S-L, Li Y, et al. The Allen Mouse Brain Common Coordinate
-> Framework: A 3D Reference Atlas. *Cell*. 2020;181(4):936â€“953.e20.
+> Framework: A 3D Reference Atlas. *Cell*. 2020;181(4):936-953.e20.
 > [https://doi.org/10.1016/j.cell.2020.04.007](https://doi.org/10.1016/j.cell.2020.04.007)
 
 An annotation volume is not required for the manuscript panels. The lower-level
@@ -89,11 +89,11 @@ are used. Figures are exported with `exportgraphics` when available and with a
 | Figure | Selection |
 | --- | --- |
 | S1A | Muscimol animals with `good_targeting` marked as included |
-| S3Câ€“E | mDMS photometry animals with `photo_cell` equal to `pv`, `ltsi`, or `thin` |
+| S3C-E | mDMS photometry animals with `photo_cell` equal to `pv`, `ltsi`, or `thin` |
 | S8B, D | mDMS photometry animals with `photo_cell` equal to `d1` or `a2a` |
 | S10B, E, G | Out-of-task animals with TH-Chrimson stimulation and SST, D1, or A2A photometry |
 | S10C | In-task animals with TH-Chrimson stimulation and SST photometry |
-| S12Câ€“D | SST or TH control/inhibition animals included in behavior or slice experiments |
+| S12C-D | SST or TH control/inhibition animals included in behavior or slice experiments |
 
 For photometry panels, left- and right-hemisphere inclusion is determined by
 `usable_data_left` and `usable_data_right`. Included placements are shown as
@@ -102,7 +102,7 @@ crosses. Bilateral placements are assigned together to the nearest AP panel
 using the animal's mean AP coordinate. Panels are spaced by 0.30 mm around the
 +0.75-mm anchor used in the manuscript.
 
-The Allen volume is interpreted in AP Ã— DV Ã— ML orientation. Coordinates are
+The Allen volume is interpreted in AP — DV — ML orientation. Coordinates are
 converted using the SHARP-Track/SHARCQ bregma convention of `[5.4, 0, 5.7]` mm
 from the volume origin.
 
