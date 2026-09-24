@@ -132,9 +132,57 @@ The upstream env.yml describes the historical environment associated with the or
 Virtual-environment directories such as .venv/ are not included in the repository.
 
 
-
-
 The code under `upstream_glmhmm/` remains a separate upstream repository and is not relicensed by this project. Any license subsequently applied to the paper repository applies only to original project-specific materials unless explicitly stated otherwise.
 
 
+## Reproducing the figures
+
+Run the MATLAB plotting functions from the root of the paper repository. Add the analysis scripts to the MATLAB path:
+
+```matlab
+addpath("rl_glm_hmm/scripts");
+```
+
+Set `dataDir` to the directory containing the analysis-ready CSV files:
+
+```matlab
+dataDir = "rl_glm_hmm/data";
+```
+
+### Main Figure 5
+
+```matlab
+results5 = plot_rlhmm_figure5( ...
+    fullfile(dataDir, "figure5_trial_metadata.csv"), ...
+    fullfile(dataDir, "rlhmm_posteriors.csv"), ...
+    fullfile(dataDir, "rl_params.csv"), ...
+    fullfile(dataDir, "transition_matrix.csv"), ...
+    fullfile(dataDir, "animals.csv"), ...
+    "rl_glm_hmm/outputs/figure5");
+```
+
+This function reproduces the analytical panels in Figure 5 and writes figure source files and supporting statistics tables to the specified output directory.
+
+### Supplemental Figure S15
+
+```matlab
+resultsS15 = plot_rlhmm_figureS15( ...
+    fullfile(dataDir, "masterLL.csv"), ...
+    fullfile(dataDir, "rlhmm_posteriors.csv"), ...
+    fullfile(dataDir, "animals.csv"), ...
+    "rl_glm_hmm/outputs/figureS15");
+```
+
+This function reproduces the data-driven panels C–L of Figure S15. Panels A and B are conceptual schematics and are not generated programmatically. The six example sessions in panels D–I are identified explicitly in the function to reproduce the submitted figure.
+
+The final output-directory argument is optional. If it is omitted, MATLAB opens the figures and returns the numerical results without writing files to disk.
+
+Detailed descriptions of the required inputs, historical analysis conventions, outputs, and software dependencies are available from MATLAB:
+
+```matlab
+help plot_rlhmm_figure5
+help plot_rlhmm_figureS15
+```
+
+The Statistics and Machine Learning Toolbox is required for the statistical tests and mixed-effects models used by these functions.
 
