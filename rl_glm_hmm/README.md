@@ -19,6 +19,7 @@ This directory contains the RL-GLM-HMM implementation used for the behavioral an
   - `cross_validate_models.py`: Performs session-fold model cross-validation.
   - `fit_final_model.py`: Fits the selected model specification using multiple random initializations.
   - `plot_rlhmm_figure5.m`: Reproduces the computational panels and statistics for Figure 5.
+  - `plot_rlhmm_figureS15.m`: Reproduces the computational panels and statistics for Figure S15.
 
 * `requirements.txt`: Python dependencies required for the project-specific implementation and analysis scripts.
 
