@@ -20,4 +20,4 @@ This analysis and the RL-GLM-HMM models use the same optogenetic experiment. The
 
 The function exports an animal-by-phase table, group means/SEMs, the binomial mixed-model interaction results, and PNG/PDF panels. For C/E, it plots P(pull) after a rewarded push (the complement of the source script's push win-stay). For D/F, it plots P(pull) after a rewarded pull. The tests preserve the source script's separate consecutive-trial filtering and random intercepts for animal and session. The manuscript's per-phase asterisks were added outside the provided script; their post hoc calculations still need a traceable source.
 
-MATLAB's Statistics and Machine Learning Toolbox is required for `fitglme`. The function has not yet been run against the original trial CSVs; compare the resulting curves and interaction p values with the submitted Figure 4 before treating the output as verified.
+MATLAB's Statistics and Machine Learning Toolbox is required for `fitglme`.
