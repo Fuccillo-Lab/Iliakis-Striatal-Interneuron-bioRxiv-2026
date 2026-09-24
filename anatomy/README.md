@@ -17,7 +17,6 @@ were assembled separately for the manuscript.
   anatomy panels from the five animal metadata tables.
 - `plot_allen_coronal_sections.m` is the shared renderer that maps bilateral
   histological coordinates onto Allen CCFv3 coronal sections.
-- `.gitignore` prevents local NRRD atlas files from being committed.
 
 ## Data availability
 
@@ -37,17 +36,7 @@ The anatomy analysis expects these files from the Zenodo archive:
 | `animalsOptoBehavior.csv` | S12 | SST and TH inhibition cohorts |
 
 All tables contain histological fiber coordinates in millimeters relative to
-bregma. The default schema uses `animalID`, `good_targeting`, and the bilateral
-coordinate columns:
-
-```text
-left_histo_fiber_ap   left_histo_fiber_dv   left_histo_fiber_ml
-right_histo_fiber_ap  right_histo_fiber_dv  right_histo_fiber_ml
-```
-
-The photometry tables additionally use `usable_data_left` and
-`usable_data_right`. `animalsOptoBehavior.csv` identifies animals with
-`animal_id`; the entry-point function maps this field to `animalID` internally.
+bregma. 
 
 ## Allen CCFv3 template
 
