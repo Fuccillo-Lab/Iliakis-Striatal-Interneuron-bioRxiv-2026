@@ -1,7 +1,7 @@
 # Optogenetic inhibition behavior
 
 This directory contains the MATLAB analyses for the optogenetic behavioral
-results in Figure 4C–F and Figure S14 of:
+results in Figure 4C–F, Figure S13, and Figure S14 of:
 
 > Iliakis EA et al. *Striatal interneuron microcircuits gate reinforcement to
 > stabilize adaptive choice.* bioRxiv (2026).
@@ -13,6 +13,7 @@ remaining Figure 4 panels belong to other experimental datasets.
 ## Contents
 
 - `plot_figure4_behavior.m` reproduces Figure 4C–F.
+- `plot_figureS13_wsls.m` reproduces Figure S13A–L.
 - `plot_figureS14_policy.m` reproduces Figure S14A–D.
 - `README.md` documents the shared inputs, analyses, and outputs.
 
@@ -24,7 +25,7 @@ be archived separately on Zenodo.
 **Zenodo record:** forthcoming
 
 After downloading and extracting the Zenodo archive, set `dataRoot` below to
-the local `OptogeneticsData` directory. Both scripts use the same four inputs:
+the local `OptogeneticsData` directory. All three scripts use the same four inputs:
 
 | File | Role |
 | --- | --- |
@@ -58,12 +59,56 @@ animalFile = fullfile(dataRoot, "animals.csv");
 results4 = plot_figure4_behavior( ...
     trialFile, metadataFile, posteriorFile, animalFile, outputFolder);
 
+resultsS13 = plot_figureS13_wsls( ...
+    trialFile, metadataFile, posteriorFile, animalFile, outputFolder);
+
 resultsS14 = plot_figureS14_policy( ...
     trialFile, metadataFile, posteriorFile, animalFile, outputFolder);
 ```
 
-MATLAB's Statistics and Machine Learning Toolbox is required. Figure 4 uses
-`fitglme`; Figure S14 uses `fitglm` and `fitlme`.
+MATLAB's Statistics and Machine Learning Toolbox is required. Figures 4 and
+S13 use `fitglme`; Figure S14 uses `fitglm` and `fitlme`.
+
+## Figure S13 analysis
+
+Panels A–H compare action-specific win-stay and lose-switch behavior. PRE bars
+show the control-versus-inhibition comparison before repeated stimulation.
+The opto-session bars show the same animals separately after Light OFF and
+Light ON outcome trials. Animal-level values are displayed, while the tests
+are trial-level binomial generalized linear mixed-effects models.
+
+The PRE models are:
+
+```text
+behavior ~ condition + (1 | animalID) + (1 | sessionID)
+```
+
+The opto-session models are:
+
+```text
+behavior ~ condition * previous-trial light
+         + (1 + previous-trial light | animalID)
+         + (1 | sessionID)
+```
+
+The p value printed above the opto-session bars is the condition main effect.
+The exported statistics also contain the light main effect, condition-by-light
+interaction, and direct Light ON-versus-OFF contrasts within control and
+inhibition animals. These additional tests distinguish a group difference
+accumulated across sessions from an effect time-locked to a single stimulated
+trial.
+
+Panels I–L show push and pull lose-switch behavior across the five experimental
+phases. Animals are weighted equally in the plotted mean and SEM. Statistics
+use consecutive model-ready trials and the model:
+
+```text
+lose-switch ~ condition * phase + (1 | animalID) + (1 | sessionID)
+```
+
+The printed p value is the omnibus condition-by-phase interaction. Asterisks
+mark inhibition-versus-control coefficients with *p* < 0.05: the PRE group
+contrast at PRE and the condition-by-phase coefficient at subsequent phases.
 
 ## Figure S14 analysis
 
@@ -100,6 +145,18 @@ condition-by-phase interaction relative to PRE.
 
 Figure 4 exports its composite figure and animal-, group-, interaction-, and
 coefficient-level CSV files as documented in `plot_figure4_behavior.m`.
+
+Figure S13 exports:
+
+- `figureS13_wsls.png` and `.pdf`
+- `figureS13_acute_animal_summary.csv`
+- `figureS13_acute_model_stats.csv`
+- `figureS13_acute_coefficient_stats.csv`
+- `figureS13_acute_light_simple_effects.csv`
+- `figureS13_sustained_animal_phase.csv`
+- `figureS13_sustained_group_summary.csv`
+- `figureS13_sustained_model_stats.csv`
+- `figureS13_sustained_coefficient_stats.csv`
 
 Figure S14 exports:
 
